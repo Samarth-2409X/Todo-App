@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Colorful Todo App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4, #fad0c4);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 50px 20px;
+      margin: 0;
+    }
+
+    #box1 {
+      font-size: 32px;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(to right, #fc6767, #ec008c);
+      padding: 15px 30px;
+      border-radius: 15px;
+      margin-bottom: 25px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    input[type="text"] {
+      width: 90%;
+      max-width: 350px;
+      padding: 12px 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      outline: none;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      padding: 10px 16px;
+      margin: 6px;
+      font-size: 15px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Different button colors */
+    button:nth-of-type(1) {
+      background: linear-gradient(to right, #56ab2f, #a8e063);
+    }
+
+    button:nth-of-type(2) {
+      background: linear-gradient(to right, #ffb347, #ffcc33);
+    }
+
+    button:nth-of-type(3) {
+      background: linear-gradient(to right, #f7971e, #ffd200);
+    }
+
+    #todos {
+      margin-top: 30px;
+      width: 90%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    #todos > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      border-radius: 14px;
+      color: #333;
+      font-weight: 500;
+      font-size: 17px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    #todos button {
+      background: linear-gradient(to right, #ff416c, #ff4b2b);
+      color: white;
+      padding: 6px 12px;
+      font-size: 14px;
+      border-radius: 8px;
+    }
+
+    #todos button:hover {
+      background: linear-gradient(to right, #e63946, #d62828);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div id="box1">Todo List</div>
+  <input type="text" placeholder="What's on your mind?" />
+  <div>
+    <button onclick="addTodo()">Add Todo</button>
+    <button onclick="DeletefirstTodo()">Delete First Todo</button>
+    <button onclick="DeletelastTodo()">Delete Last Todo</button>
+  </div>
+
+  <div id="todos"></div>
+
+  <script>
+    let todos = [];
+
+    function addTodo() {
+      todos.push({
+        title: document.querySelector("input").value
+      });
+      render();
+    }
+
+    function DeletefirstTodo() {
+      todos.splice(0, 1);
+      render();
+    }
+
+    function DeletelastTodo() {
+      todos.splice(todos.length - 1, 1);
+      render();
+    }
+
+    function getRandomColor() {
+      const colors = ['#f6d365', '#fda085', '#ff9a9e', '#c1dfc4', '#d4fc79', '#a1c4fd', '#c2e9fb'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function createComponent(Todo, index) {
+      const div = document.createElement("div");
+      const h1 = document.createElement("h1");
+      const button = document.createElement("button");
+
+      h1.innerHTML = Todo.title;
+      button.innerHTML = "Delete";
+
+      div.style.background = getRandomColor();
+
+      button.onclick = function () {
+        todos.splice(index, 1);
+        render();
+      };
+
+      div.appendChild(h1);
+      div.appendChild(button);
+      return div;
+    }
+
+    function render() {
+      document.querySelector("#todos").innerHTML = "";
+      for (let i = 0; i < todos.length; i++) {
+        const element = createComponent(todos[i], i);
+        document.querySelector("#todos").appendChild(element);
+      }
+    }
+  </script>
+</body>
+</html>
